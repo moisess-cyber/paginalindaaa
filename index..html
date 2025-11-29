@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Valeriaa</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7ecff;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.4em;
+      color: #7a32ff;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 1.1em;
+      color: #5e5e5e;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      border: 1px solid #d6d6d6;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 1em;
+      outline: none;
+      resize: none;
+    }
+
+    textarea:focus {
+      border-color: #a46bff;
+    }
+
+    button {
+      background: #7a32ff;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      font-size: 1em;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 12px;
+      width: 100%;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #6226d4;
+    }
+
+    .entry {
+      background: #faf7ff;
+      padding: 12px;
+      border-left: 4px solid #b892ff;
+      border-radius: 6px;
+      margin-top: 15px;
+      white-space: pre-wrap;
+      animation: fade 0.3s ease;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9em;
+      color: #666;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Para Valeria</h1>
+  <p class="subtitle">Un pequeño espacio donde escribo lo que siento y cómo fue mi día contigo.</p>
+</header>
+
+<div class="container">
+  <h3>Escribe tu día o un mensaje:</h3>
+  <textarea id="msg" placeholder="Hoy..."></textarea>
+  <button onclick="guardar()">Guardar</button>
+  <div id="diario"></div>
+</div>
+
+<footer>
+  Hecho por Moisess
+</footer>
+
+<script>
+  function guardar() {
+    const texto = document.getElementById("msg").value.trim();
+    if (texto === "") return;
+
+    const fecha = new Date().toLocaleDateString('es-ES');
+    const nuevaEntrada = fecha + " — " + texto;
+
+    // Guardar en localStorage
+    let entradas = JSON.parse(localStorage.getItem('diario')) || [];
+    entradas.unshift(nuevaEntrada);
+    localStorage.setItem('diario', JSON.stringify(entradas));
+
+    mostrarEntradas();
+    document.getElementById("msg").value = "";
+  }
+
+  function mostrarEntradas() {
+    const diario = document.getElementById("diario");
+    diario.innerHTML = "";
+
+    let entradas = JSON.parse(localStorage.getItem('diario')) || [];
+    entradas.forEach(e => {
+      const div = document.createElement("div");
+      div.className = "entry";
+      div.textContent = e;
+      diario.appendChild(div);
+    });
+  }
+
+  // Cargar al abrir
+  mostrarEntradas();
+</script>
+</body>
+</html>
